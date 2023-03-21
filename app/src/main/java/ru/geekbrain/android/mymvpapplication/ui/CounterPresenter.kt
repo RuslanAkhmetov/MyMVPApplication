@@ -1,20 +1,24 @@
 package ru.geekbrain.android.mymvpapplication.ui
 
+import moxy.InjectViewState
+import moxy.MvpPresenter
 import ru.geekbrain.android.mymvpapplication.model.CounterModelImpl
 
-class CounterPresenter(var model: CounterModelImpl): CounterContract.Presenter {
-    private lateinit var view: CounterContract.MainView
+@InjectViewState
+class CounterPresenter(private val model: CounterModelImpl): CounterContract.Presenter,
+    MvpPresenter<CounterContract.MainView>() {
 
-    override fun onAttach(view: CounterContract.MainView) {
-        this.view = view
+
+    override fun counterOneClick() {
+        viewState.setCounterOneText( model.next(1).toString())
     }
 
-
-    override fun onAction(indexOfActionMaker: Int) {
-        view.setCounterText(indexOfActionMaker, model.next(indexOfActionMaker).toString())
+    override fun counterTwoClick() {
+        viewState.setCounterTwoText( model.next(2).toString())
     }
 
-    override fun onRestoreCounter(index: Int): Int =
-        model.getCurrent(index)
+    override fun counterThreeClick() {
+        viewState.setCounterThreeText( model.next(3).toString())
+    }
 
 }

@@ -1,61 +1,47 @@
 package ru.geekbrain.android.mymvpapplication.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import ru.geekbrain.android.mymvpapplication.app
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
 import ru.geekbrain.android.mymvpapplication.databinding.ActivityMainBinding
+import ru.geekbrain.android.mymvpapplication.model.CounterModelImpl
 
 
+class MainActivity : MvpAppCompatActivity(), CounterContract.MainView {
 
-class MainActivity : AppCompatActivity(), CounterContract.MainView {
-
-    private lateinit var presenter: CounterPresenter
+    private val presenter by moxyPresenter { CounterPresenter(CounterModelImpl()) }
     private val TAG = "MainActivity"
 
     private lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter = CounterPresenter(app.model)
-        presenter.onAttach(this)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initView()
-
         binding.btnCounter1.setOnClickListener {
-            presenter.onAction(1)
+            presenter.counterOneClick()
         }
 
         binding.btnCounter2.setOnClickListener {
-            presenter.onAction(2)
+            presenter.counterTwoClick()
         }
 
         binding.btnCounter3.setOnClickListener {
-            presenter.onAction(3)
+            presenter.counterThreeClick()
         }
     }
 
-    private fun initView(){
-        binding.btnCounter1.text = presenter.onRestoreCounter(1).toString()
-        Log.i(TAG, "initView: ")
-        binding.btnCounter2.text = presenter.onRestoreCounter(2).toString()
-        binding.btnCounter3.text = presenter.onRestoreCounter(3).toString()
+    override fun setCounterOneText(counterText: String) {
+        binding.btnCounter1.text = counterText
     }
 
-
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        initView()
+    override fun setCounterTwoText(counterText: String) {
+        binding.btnCounter2.text = counterText
     }
 
-    override fun setCounterText(counterIndex: Int, counterText: String) {
-       when(counterIndex){
-           1 -> binding.btnCounter1.text = counterText
-           2 -> binding.btnCounter2.text = counterText
-           3 -> binding.btnCounter3.text = counterText
-       }
+    override fun setCounterThreeText(counterText: String) {
+        binding.btnCounter3.text = counterText
     }
 }

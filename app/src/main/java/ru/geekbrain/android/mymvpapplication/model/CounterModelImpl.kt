@@ -10,7 +10,6 @@ class CounterModelImpl: CounterModel {
     override fun getCurrent(index: Int): Int =
             counters[index-1]
 
-
     override fun next(index: Int): Int =
         ++counters[index-1]
 
