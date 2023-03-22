@@ -1,16 +1,19 @@
 package ru.geekbrain.android.mymvpapplication.ui
 
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
+import ru.geekbrain.android.mymvpapplication.data.FakeUserRepoImpl
 import ru.geekbrain.android.mymvpapplication.databinding.ActivityMainBinding
-import ru.geekbrain.android.mymvpapplication.model.CounterModelImpl
 
 
-class MainActivity : MvpAppCompatActivity(), CounterContract.MainView {
+class MainActivity : MvpAppCompatActivity(), GithubUsersContract.UserView {
 
-    private val presenter by moxyPresenter { CounterPresenter(CounterModelImpl()) }
     private val TAG = "MainActivity"
+
+    private val presenter by moxyPresenter { MainPresenter(FakeUserRepoImpl()) }
+    private var adapter: UsersRVAdapter? = null
 
     private lateinit var binding : ActivityMainBinding
 
@@ -20,28 +23,18 @@ class MainActivity : MvpAppCompatActivity(), CounterContract.MainView {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnCounter1.setOnClickListener {
-            presenter.counterOneClick()
-        }
 
-        binding.btnCounter2.setOnClickListener {
-            presenter.counterTwoClick()
-        }
-
-        binding.btnCounter3.setOnClickListener {
-            presenter.counterThreeClick()
-        }
     }
 
-    override fun setCounterOneText(counterText: String) {
-        binding.btnCounter1.text = counterText
+    override fun init() {
+        binding?.rvUsers?.layoutManager = LinearLayoutManager(this)
+        adapter = UsersRVAdapter(presenter = presenter.userListPresenter)
+        binding?.rvUsers?.adapter = adapter
     }
 
-    override fun setCounterTwoText(counterText: String) {
-        binding.btnCounter2.text = counterText
+    override fun updateList() {
+        adapter?.notifyDataSetChanged()
     }
 
-    override fun setCounterThreeText(counterText: String) {
-        binding.btnCounter3.text = counterText
-    }
+
 }

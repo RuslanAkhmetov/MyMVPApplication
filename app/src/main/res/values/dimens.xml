@@ -2,4 +2,7 @@
 <resources>
     <dimen name="layout_padding">16dp</dimen>
     <dimen name="l_padding">16dp</dimen>
+    <dimen name="marginStart">16dp</dimen>
+    <dimen name="padding_Top">16dp</dimen>
+    <dimen name="padding_Bottom">16dp</dimen>
 </resources>
