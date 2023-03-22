@@ -1,18 +1,23 @@
 package ru.geekbrain.android.mymvpapplication.ui
 
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
-import ru.geekbrain.android.mymvpapplication.data.FakeUserRepoImpl
+import ru.geekbrain.android.mymvpapplication.App
+import ru.geekbrain.android.mymvpapplication.R
 import ru.geekbrain.android.mymvpapplication.databinding.ActivityMainBinding
 
 
-class MainActivity : MvpAppCompatActivity(), GithubUsersContract.UserView {
+class MainActivity : MvpAppCompatActivity(), MainActivityContract.MainView {
 
     private val TAG = "MainActivity"
 
-    private val presenter by moxyPresenter { MainPresenter(FakeUserRepoImpl()) }
+    val navigator = AppNavigator(this, R.id.container)
+
+    private val presenter by moxyPresenter {
+        MainPresenter(App.instance.router, AndroidScreens()) }
+
     private var adapter: UsersRVAdapter? = null
 
     private lateinit var binding : ActivityMainBinding
@@ -22,18 +27,25 @@ class MainActivity : MvpAppCompatActivity(), GithubUsersContract.UserView {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
     }
 
-    override fun init() {
-        binding?.rvUsers?.layoutManager = LinearLayoutManager(this)
-        adapter = UsersRVAdapter(presenter = presenter.userListPresenter)
-        binding?.rvUsers?.adapter = adapter
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        App.instance.navigatorHolder.setNavigator(navigator)
     }
 
-    override fun updateList() {
-        adapter?.notifyDataSetChanged()
+    override fun onPause() {
+        super.onPause()
+        App.instance.navigatorHolder.removeNavigator()
+    }
+
+    override fun onBackPressed() {
+        for (fragment in supportFragmentManager.fragments) {
+            if (fragment is BackButtonListener && fragment.backPressed()){
+                return
+            }
+        }
+        presenter.backClicked()
     }
 
 

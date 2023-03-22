@@ -14,5 +14,6 @@ class GithubUsersContract {
 
     interface Presenter{
         fun loadData()
+        fun backPressed(): Boolean
     }
 }
