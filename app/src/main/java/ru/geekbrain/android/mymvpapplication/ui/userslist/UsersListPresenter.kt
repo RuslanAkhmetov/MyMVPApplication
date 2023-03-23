@@ -1,16 +1,21 @@
-package ru.geekbrain.android.mymvpapplication.ui
+package ru.geekbrain.android.mymvpapplication.ui.userslist
 
 import com.github.terrakok.cicerone.Router
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import ru.geekbrain.android.mymvpapplication.domain.entities.GithubUser
 import ru.geekbrain.android.mymvpapplication.domain.repos.UsersRepo
+import ru.geekbrain.android.mymvpapplication.ui.IScreens
+import ru.geekbrain.android.mymvpapplication.ui.IUserListPresenter
+import ru.geekbrain.android.mymvpapplication.ui.userslist.GithubUsersContract.UserItemView
 
 @InjectViewState
-class UserPresenter(private val usersRepo: UsersRepo, val router: Router): GithubUsersContract.Presenter,
+class UsersListPresenter(private val usersRepo: UsersRepo, val router: Router, val screens: IScreens):
+    GithubUsersContract.Presenter,
     MvpPresenter<GithubUsersContract.UserView>() {
 
-    class UserListPresenterImpl: IUserListPresenter{
+    class UserListPresenterImpl: IUserListPresenter {
+
         val users = mutableListOf<GithubUser>()
 
         override var itemClickListener: ((UserItemView) -> Unit)? = null
@@ -34,7 +39,7 @@ class UserPresenter(private val usersRepo: UsersRepo, val router: Router): Githu
         loadData()
 
         userListPresenter.itemClickListener = {itemView ->
-            //TODO: переход на экран пользователя
+            router.navigateTo(screens.userInfo(itemView.pos))
         }
     }
 

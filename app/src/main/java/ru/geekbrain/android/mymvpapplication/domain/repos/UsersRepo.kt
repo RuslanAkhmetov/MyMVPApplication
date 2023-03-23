@@ -10,6 +10,8 @@ interface UsersRepo {
 
     fun getUsers(): List<GithubUser>
 
+    fun getUser(index: Int): GithubUser
+
     fun getUsers(
         onSuccess: (List<GithubUser>) -> Unit,
         onError: ((Throwable) -> Unit)? = null

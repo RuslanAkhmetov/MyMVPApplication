@@ -5,4 +5,5 @@
     <dimen name="marginStart">16dp</dimen>
     <dimen name="padding_Top">16dp</dimen>
     <dimen name="padding_Bottom">16dp</dimen>
+    <dimen name="list_text_size">24sp</dimen>
 </resources>

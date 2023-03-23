@@ -26,4 +26,8 @@ class FakeUserRepoImpl : UsersRepo {
         }, DATA_LOADING_FAKE_DELAY)
 
     }
+
+    override fun getUser(index: Int): GithubUser =
+        userList[index]
+
 }

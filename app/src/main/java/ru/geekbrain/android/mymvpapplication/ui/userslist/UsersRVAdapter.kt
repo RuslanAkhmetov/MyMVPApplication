@@ -1,16 +1,20 @@
-package ru.geekbrain.android.mymvpapplication.ui
+package ru.geekbrain.android.mymvpapplication.ui.userslist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.geekbrain.android.mymvpapplication.databinding.RecyclerviewItemBinding
+import ru.geekbrain.android.mymvpapplication.ui.IUserListPresenter
 
 class UsersRVAdapter(private val presenter: IUserListPresenter) :
     RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(RecyclerviewItemBinding.inflate(LayoutInflater.from(parent.context), parent,false)).apply {
+        ViewHolder(RecyclerviewItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false)).apply {
             itemView.setOnClickListener {
                 presenter.itemClickListener?.invoke(this)
             }
@@ -23,7 +27,7 @@ class UsersRVAdapter(private val presenter: IUserListPresenter) :
         presenter.getCount()
 
     inner class ViewHolder(val vb: RecyclerviewItemBinding) :
-        RecyclerView.ViewHolder(vb.root), UserItemView {
+        RecyclerView.ViewHolder(vb.root), GithubUsersContract.UserItemView {
 
         override var pos = -1
 

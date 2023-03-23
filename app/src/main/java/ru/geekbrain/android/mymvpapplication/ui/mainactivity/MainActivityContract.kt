@@ -1,4 +1,4 @@
-package ru.geekbrain.android.mymvpapplication.ui
+package ru.geekbrain.android.mymvpapplication.ui.mainactivity
 
 import moxy.MvpView
 

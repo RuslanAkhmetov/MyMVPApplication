@@ -62,5 +62,8 @@ dependencies {
     //Cicerone
     implementation 'com.github.terrakok:cicerone:6.6'
 
+    //Coil
+    implementation 'io.coil-kt:coil:2.2.2'
+
 
 }

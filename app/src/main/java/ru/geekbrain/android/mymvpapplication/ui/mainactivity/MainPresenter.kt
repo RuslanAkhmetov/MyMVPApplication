@@ -1,7 +1,8 @@
-package ru.geekbrain.android.mymvpapplication.ui
+package ru.geekbrain.android.mymvpapplication.ui.mainactivity
 
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
+import ru.geekbrain.android.mymvpapplication.ui.IScreens
 
 class MainPresenter(private val router: Router, private val screens: IScreens) :
     MvpPresenter<MainActivityContract.MainView>() {
@@ -14,7 +15,6 @@ class MainPresenter(private val router: Router, private val screens: IScreens) :
     fun backClicked() {
         router.exit()
     }
-
 
 }
 

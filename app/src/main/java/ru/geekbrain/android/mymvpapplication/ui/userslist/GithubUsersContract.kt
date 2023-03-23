@@ -1,4 +1,4 @@
-package ru.geekbrain.android.mymvpapplication.ui
+package ru.geekbrain.android.mymvpapplication.ui.userslist
 
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
@@ -15,5 +15,13 @@ class GithubUsersContract {
     interface Presenter{
         fun loadData()
         fun backPressed(): Boolean
+    }
+
+    interface UserItemView: IItemView {
+        fun setLogin(text: String)
+    }
+
+    interface IItemView {
+        var pos: Int
     }
 }

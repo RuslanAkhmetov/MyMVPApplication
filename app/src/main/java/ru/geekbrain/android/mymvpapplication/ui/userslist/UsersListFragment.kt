@@ -1,4 +1,4 @@
-package ru.geekbrain.android.mymvpapplication.ui
+package ru.geekbrain.android.mymvpapplication.ui.userslist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,16 +8,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrain.android.mymvpapplication.App
-import ru.geekbrain.android.mymvpapplication.data.FakeUserRepoImpl
 import ru.geekbrain.android.mymvpapplication.databinding.FragmentUsersBinding
+import ru.geekbrain.android.mymvpapplication.ui.AndroidScreens
+import ru.geekbrain.android.mymvpapplication.ui.BackButtonListener
 
-class UserFragment: MvpAppCompatFragment(), GithubUsersContract.UserView, BackButtonListener {
+class UsersListFragment: MvpAppCompatFragment(), GithubUsersContract.UserView, BackButtonListener {
+
     companion object{
-        fun newInstance() = UserFragment()
+        fun newInstance() = UsersListFragment()
     }
 
-    val presenter: UserPresenter by moxyPresenter {
-        UserPresenter(FakeUserRepoImpl(),  App.instance.router)
+    val presenter: UsersListPresenter by moxyPresenter {
+        UsersListPresenter(App.instance.gitHubUsersRepo,  App.instance.router, AndroidScreens())
     }
 
     var adapter: UsersRVAdapter?= null
