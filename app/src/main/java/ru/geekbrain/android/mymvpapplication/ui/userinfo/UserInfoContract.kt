@@ -13,7 +13,7 @@ class UserInfoContract {
     }
 
     interface UserInfoPresenter {
-        fun loadUserInfo(index: Int):GithubUser
+        fun loadUserInfo(index: Int)
     }
 
 }

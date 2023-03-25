@@ -1,6 +1,8 @@
 package ru.geekbrain.android.mymvpapplication.ui.userslist
 
 import com.github.terrakok.cicerone.Router
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import ru.geekbrain.android.mymvpapplication.domain.entities.GithubUser
@@ -10,11 +12,15 @@ import ru.geekbrain.android.mymvpapplication.ui.IUserListPresenter
 import ru.geekbrain.android.mymvpapplication.ui.userslist.GithubUsersContract.UserItemView
 
 @InjectViewState
-class UsersListPresenter(private val usersRepo: UsersRepo, val router: Router, val screens: IScreens):
+class UsersListPresenter(
+    private val usersRepo: UsersRepo,
+    val router: Router,
+    val screens: IScreens
+) :
     GithubUsersContract.Presenter,
     MvpPresenter<GithubUsersContract.UserView>() {
 
-    class UserListPresenterImpl: IUserListPresenter {
+    class UserListPresenterImpl : IUserListPresenter {
 
         val users = mutableListOf<GithubUser>()
 
@@ -30,6 +36,7 @@ class UsersListPresenter(private val usersRepo: UsersRepo, val router: Router, v
 
     }
 
+    lateinit var disposable: Disposable
 
     val userListPresenter = UserListPresenterImpl()
 
@@ -38,19 +45,30 @@ class UsersListPresenter(private val usersRepo: UsersRepo, val router: Router, v
         viewState.init()
         loadData()
 
-        userListPresenter.itemClickListener = {itemView ->
+        userListPresenter.itemClickListener = { itemView ->
             router.navigateTo(screens.userInfo(itemView.pos))
         }
     }
 
+    fun error(error: String) {
+
+    }
+
     override fun loadData() {
-        val users = usersRepo.getUsers()
-        userListPresenter.users.addAll(users)
+        disposable = Observable.just(usersRepo.getUsers())
+            .subscribe(
+                { gitHubUser ->
+                    userListPresenter.users.addAll(gitHubUser)
+                }, {
+                    error(it.message.toString())
+                })
+
         viewState.updateList()
     }
 
     override fun backPressed(): Boolean {
         router.exit()
+        disposable.dispose()
         return true
     }
 

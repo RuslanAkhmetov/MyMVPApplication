@@ -10,7 +10,6 @@ import moxy.ktx.moxyPresenter
 import ru.geekbrain.android.mymvpapplication.App
 import ru.geekbrain.android.mymvpapplication.databinding.FragmentUserInfoBinding
 import ru.geekbrain.android.mymvpapplication.domain.entities.GithubUser
-import ru.geekbrain.android.mymvpapplication.ui.AndroidScreens
 import ru.geekbrain.android.mymvpapplication.ui.BackButtonListener
 
 class UserInfoFragment(var position: Int) : MvpAppCompatFragment(), UserInfoContract.UserInfoView,
@@ -22,7 +21,6 @@ class UserInfoFragment(var position: Int) : MvpAppCompatFragment(), UserInfoCont
         UserInfoPresenter(
             App.instance.gitHubUsersRepo,
             App.instance.router,
-            AndroidScreens(),
             position
         )
     }
@@ -45,6 +43,7 @@ class UserInfoFragment(var position: Int) : MvpAppCompatFragment(), UserInfoCont
     }
 
     override fun backPressed(): Boolean {
+
         return presenter.backPressed()
     }
 
