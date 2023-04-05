@@ -4,7 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?attr/selectableItemBackground"
-    android:gravity="center_vertical">
+    android:gravity="start">
+
+    <ImageView
+        android:id="@+id/avatar_image_view"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
 
     <TextView
         android:id="@+id/tv_login"
@@ -12,5 +17,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/list_text_size"
         android:layout_marginStart="@dimen/marginStart"/>
+
+
 
 </LinearLayout>

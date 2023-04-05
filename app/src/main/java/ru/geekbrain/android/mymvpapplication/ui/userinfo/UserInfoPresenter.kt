@@ -1,12 +1,10 @@
 package ru.geekbrain.android.mymvpapplication.ui.userinfo
 
 import com.github.terrakok.cicerone.Router
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 import ru.geekbrain.android.mymvpapplication.domain.entities.GithubUser
-import ru.geekbrain.android.mymvpapplication.domain.repos.UsersRepo
+import ru.geekbrain.android.mymvpapplication.model.repo.UsersRepo
 
 class UserInfoPresenter(
     private val usersRepo: UsersRepo,
@@ -28,13 +26,8 @@ class UserInfoPresenter(
 
     override fun loadUserInfo(index: Int) {
 
-        disposable= Observable.just(usersRepo.getUser(index))
-            .observeOn(AndroidSchedulers.mainThread()).subscribe {
-                gitHubUser = it
-                viewState.setUserInfo(it)
-            }
-    }
 
+    }
 
     fun backPressed(): Boolean {
         router.exit() // .navigateTo(screens.users())

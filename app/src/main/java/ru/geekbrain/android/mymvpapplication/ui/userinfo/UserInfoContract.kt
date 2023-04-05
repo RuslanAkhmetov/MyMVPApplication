@@ -10,6 +10,7 @@ class UserInfoContract {
     @StateStrategyType(AddToEndSingleStrategy::class)
     interface UserInfoView: MvpView {
         fun setUserInfo(githubUser: GithubUser)
+        fun loadAvatar (avatarUrl:String)
     }
 
     interface UserInfoPresenter {

@@ -1,34 +1,38 @@
 package ru.geekbrain.android.mymvpapplication.ui.userslist
 
 import com.github.terrakok.cicerone.Router
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.Disposable
-import moxy.InjectViewState
+import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import ru.geekbrain.android.mymvpapplication.domain.entities.GithubUser
-import ru.geekbrain.android.mymvpapplication.domain.repos.UsersRepo
+import ru.geekbrain.android.mymvpapplication.model.repo.UsersRepo
 import ru.geekbrain.android.mymvpapplication.ui.IScreens
 import ru.geekbrain.android.mymvpapplication.ui.IUserListPresenter
 import ru.geekbrain.android.mymvpapplication.ui.userslist.GithubUsersContract.UserItemView
 
-@InjectViewState
+
 class UsersListPresenter(
+    private val mainThreadScheduler: Scheduler,
     private val usersRepo: UsersRepo,
-    val router: Router,
-    val screens: IScreens
-) :
-    GithubUsersContract.Presenter,
-    MvpPresenter<GithubUsersContract.UserView>() {
+    private val router: Router,
+    private val screens: IScreens
+) : MvpPresenter<GithubUsersContract.UserView>(),
+    GithubUsersContract.Presenter  {
+
+    private val TAG = "UsersListPresenter"
 
     class UserListPresenterImpl : IUserListPresenter {
 
         val users = mutableListOf<GithubUser>()
 
-        override var itemClickListener: ((UserItemView) -> Unit)? = null
+        override var itemClickListener: ((UserItemView) -> Unit)?=null
+
 
         override fun bindView(view: UserItemView) {
             val user = users[view.pos]
-            view.setLogin(user.login)
+
+            user?.let {
+                view.setLogin(it.login)
+                view.loadAvatar(it.avatarUrl) }
         }
 
         override fun getCount() =
@@ -36,7 +40,6 @@ class UsersListPresenter(
 
     }
 
-    lateinit var disposable: Disposable
 
     val userListPresenter = UserListPresenterImpl()
 
@@ -46,29 +49,30 @@ class UsersListPresenter(
         loadData()
 
         userListPresenter.itemClickListener = { itemView ->
-            router.navigateTo(screens.userInfo(itemView.pos))
+
+            router.navigateTo(screens.userRepos(userListPresenter.users[itemView.pos].login))
         }
     }
 
-    fun error(error: String) {
-
-    }
 
     override fun loadData() {
-        disposable = Observable.just(usersRepo.getUsers())
-            .subscribe(
-                { gitHubUser ->
-                    userListPresenter.users.addAll(gitHubUser)
-                }, {
-                    error(it.message.toString())
+
+        usersRepo.getUsersProvider()
+            .observeOn(mainThreadScheduler)
+            .subscribe({ gitHubUser ->
+                userListPresenter.users.clear()
+                userListPresenter.users.addAll(gitHubUser)
+                viewState.updateList()
+            },
+                {
+                    println("Error ${it.message}")
                 })
 
-        viewState.updateList()
     }
 
     override fun backPressed(): Boolean {
         router.exit()
-        disposable.dispose()
+
         return true
     }
 

@@ -6,4 +6,8 @@ interface IScreens {
     fun users() : Screen
 
     fun userInfo(viewPosition: Int): Screen
+
+    fun userRepos(login: String): Screen
+
+    fun userReposInfo(viewPosition: Int):Screen
 }

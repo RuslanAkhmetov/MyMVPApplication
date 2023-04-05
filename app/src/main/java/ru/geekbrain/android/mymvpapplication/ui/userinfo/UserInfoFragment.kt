@@ -12,7 +12,7 @@ import ru.geekbrain.android.mymvpapplication.databinding.FragmentUserInfoBinding
 import ru.geekbrain.android.mymvpapplication.domain.entities.GithubUser
 import ru.geekbrain.android.mymvpapplication.ui.BackButtonListener
 
-class UserInfoFragment(var position: Int) : MvpAppCompatFragment(), UserInfoContract.UserInfoView,
+class UserInfoFragment(private var position: Int) : MvpAppCompatFragment(), UserInfoContract.UserInfoView,
     BackButtonListener {
 
     private lateinit var binding: FragmentUserInfoBinding
@@ -43,15 +43,18 @@ class UserInfoFragment(var position: Int) : MvpAppCompatFragment(), UserInfoCont
     }
 
     override fun backPressed(): Boolean {
-
         return presenter.backPressed()
     }
 
 
     override fun setUserInfo(githubUser: GithubUser) {
-        binding.avatarImageView.load(githubUser.avatarUrl)
+
         binding.loginTextView.text = githubUser.login
         binding.idTextView.text = githubUser.id.toString()
+    }
+
+    override fun loadAvatar(avatarUrl: String) {
+        binding.avatarImageView.load(avatarUrl)
     }
 
 

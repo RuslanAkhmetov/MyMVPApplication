@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Context
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Router
-import ru.geekbrain.android.mymvpapplication.data.FakeUserRepoImpl
-import ru.geekbrain.android.mymvpapplication.domain.repos.UsersRepo
+import ru.geekbrain.android.mymvpapplication.model.repo.UsersRepo
+import ru.geekbrain.android.mymvpapplication.model.repo.retrofit.RetrofitGitHubUserRepoImpl
 
 class App: Application() {
 
@@ -13,7 +13,7 @@ class App: Application() {
         lateinit var  instance: App
     }
 
-    val gitHubUsersRepo: UsersRepo = FakeUserRepoImpl()
+    val gitHubUsersRepo: UsersRepo = RetrofitGitHubUserRepoImpl(ApiHolder.api)
 
     private val cicerone: Cicerone<Router> by lazy {
         Cicerone.create()

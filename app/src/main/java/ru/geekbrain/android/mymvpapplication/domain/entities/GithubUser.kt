@@ -1,15 +1,15 @@
 package ru.geekbrain.android.mymvpapplication.domain.entities
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.Expose
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GithubUser(
-    val login : String,
-    val id : Long,
+    @Expose val login : String,
+    @Expose val id : Long,
     //val node_id : String,
-    @SerializedName("avatar_url")
+    @Expose
     val avatarUrl : String,
     /*val gravatar_id : String,
     val url : String,
@@ -19,9 +19,10 @@ data class GithubUser(
     val gists_url : String,
     val starred_url : String,
     val subscriptions_url : String,
-    val organizations_url : String,
-    val repos_url : String,
-    val events_url : String,
+    val organizations_url : String,*/
+    @Expose
+    val reposUrl : String,
+    /*val events_url : String,
     val received_events_url : String,
     val type : String,
     val site_admin : Boolean*/
