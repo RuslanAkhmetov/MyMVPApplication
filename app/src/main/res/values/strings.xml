@@ -3,4 +3,6 @@
     <string name="zero">0</string>
     <string name="login">Login</string>
     <string name="id">Id</string>
+    <string name="forks_count">Forks count</string>
+    <string name="description">Description</string>
 </resources>

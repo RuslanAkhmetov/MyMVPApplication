@@ -8,16 +8,16 @@ import ru.geekbrain.android.mymvpapplication.model.repo.UsersRepo
 import ru.geekbrain.android.mymvpapplication.ui.IScreens
 
 class UserRepositoriesListPresenter(
-    val mainThread: Scheduler,
-    val userRepo: UsersRepo,
-    val router: Router,
+    private val mainThread: Scheduler,
+    private val userRepo: UsersRepo,
+    private val router: Router,
     val login: String,
-    val screens: IScreens
+    private val screens: IScreens
 ): MvpPresenter<UserRepositoriesContract.UserRepositoriesView>(),
     UserRepositoriesContract.UserRepositoriesPresenter {
 
 
-    class  UserRepositoriesListPresenter():
+    class  UserRepositoriesListPresenter:
     UserRepositoriesContract.IRepositoriesListPresenter{
 
         var userRepositoriesList = mutableListOf<GitHubRepository>()
@@ -25,8 +25,10 @@ class UserRepositoriesListPresenter(
         override var itemClickListener: ((UserRepositoriesContract.RepositoryItemView) -> Unit)? = null
 
         override fun bindView(view: UserRepositoriesContract.RepositoryItemView) {
-            view.setName(userRepositoriesList[view.pos].name)
-            view.setId(userRepositoriesList[view.pos].id.toString())
+            userRepositoriesList[view.pos]?.let {
+                view.setName(it.name)
+                view.setId(it.id.toString())
+            }
         }
 
         override fun getCount(): Int =
@@ -41,7 +43,7 @@ class UserRepositoriesListPresenter(
         viewState.init()
         loadData()
         userRepositoriesListPresenter.itemClickListener = {
-            router.navigateTo(screens.userReposInfo(it.pos))
+            router.navigateTo(screens.userRepoInfo(login, it.pos))
         }
 
     }

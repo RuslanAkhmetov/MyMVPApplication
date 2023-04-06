@@ -9,5 +9,6 @@ class GitHubRepository(
     @Expose val id : Long,
     @Expose val name : String,
     @Expose val forksCount : Int? = null,
+    @Expose val description: String,
 ) : Parcelable
 

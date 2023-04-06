@@ -12,16 +12,27 @@ import moxy.ktx.moxyPresenter
 import ru.geekbrain.android.mymvpapplication.App
 import ru.geekbrain.android.mymvpapplication.databinding.FragmentUserRepositoriesBinding
 import ru.geekbrain.android.mymvpapplication.ui.AndroidScreens
+import ru.geekbrain.android.mymvpapplication.ui.BackButtonListener
 
-class UserRepositoriesFragment(userLogin: String): MvpAppCompatFragment(),
-    UserRepositoriesContract.UserRepositoriesView {
+const val USER_LOGIN = "userLogin"
 
-    companion object{
-        fun newInstance(userLogin: String) =
-            UserRepositoriesFragment(userLogin)
+class UserRepositoriesFragment : MvpAppCompatFragment(),
+    UserRepositoriesContract.UserRepositoriesView, BackButtonListener {
+
+    var userLogin: String = ""
+
+    companion object {
+        fun newInstance(userLogin: String): UserRepositoriesFragment {
+            val args = Bundle()
+            args.putString(USER_LOGIN, userLogin)
+            val userRepoFragment = UserRepositoriesFragment()
+            userRepoFragment.arguments = args
+            userRepoFragment.userLogin = userLogin
+            return userRepoFragment
+        }
     }
 
-    private val userRepositoriesPresenter : UserRepositoriesListPresenter by moxyPresenter {
+    private val userRepositoriesPresenter: UserRepositoriesListPresenter by moxyPresenter {
         UserRepositoriesListPresenter(
             AndroidSchedulers.mainThread(),
             App.instance.gitHubUsersRepo,
@@ -34,6 +45,13 @@ class UserRepositoriesFragment(userLogin: String): MvpAppCompatFragment(),
     private var binding: FragmentUserRepositoriesBinding? = null
 
     private var userRepositoriesAdapter: UserRepositoriesRVAdapter? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            userLogin = it.getString(USER_LOGIN).toString()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,5 +81,10 @@ class UserRepositoriesFragment(userLogin: String): MvpAppCompatFragment(),
 
     override fun showMessage(textMessage: String) {
         Toast.makeText(activity, textMessage, Toast.LENGTH_LONG).show()
+    }
+
+    override fun backPressed(): Boolean {
+        userRepositoriesPresenter.backPressed()
+        return true
     }
 }

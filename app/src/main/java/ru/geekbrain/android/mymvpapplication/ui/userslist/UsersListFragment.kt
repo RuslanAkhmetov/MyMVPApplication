@@ -27,7 +27,7 @@ class UsersListFragment: MvpAppCompatFragment(), GithubUsersContract.UserView, B
             AndroidScreens)
     }
 
-    var adapter: UsersRVAdapter?= null
+    private var adapter: UsersRVAdapter?= null
 
     private var binding: FragmentUsersBinding? = null
 

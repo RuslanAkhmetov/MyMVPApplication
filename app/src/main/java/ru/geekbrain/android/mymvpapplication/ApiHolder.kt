@@ -9,6 +9,7 @@ import ru.geekbrain.android.mymvpapplication.model.api.IDataSource
 
 object ApiHolder {
 
+    @JvmStatic
     val api: IDataSource by lazy {
         val gson = GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
