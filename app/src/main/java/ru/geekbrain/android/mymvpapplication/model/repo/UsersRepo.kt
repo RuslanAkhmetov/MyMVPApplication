@@ -18,10 +18,7 @@ interface UsersRepo {
 
     fun getUserRepoProvider(urlLogin: String): Single<List<GitHubRepository>>
 
-    fun getUsers(
-        onSuccess: (List<GithubUser>) -> Unit,
-        onError: ((Throwable) -> Unit)? = null
-    )
+
     //Update(-)
     //Delete(-)
 

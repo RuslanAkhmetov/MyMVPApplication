@@ -16,7 +16,6 @@ class UserRepositoriesListPresenter(
 ): MvpPresenter<UserRepositoriesContract.UserRepositoriesView>(),
     UserRepositoriesContract.UserRepositoriesPresenter {
 
-
     class  UserRepositoriesListPresenter:
     UserRepositoriesContract.IRepositoriesListPresenter{
 

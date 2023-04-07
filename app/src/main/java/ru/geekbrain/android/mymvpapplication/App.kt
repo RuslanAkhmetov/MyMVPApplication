@@ -4,8 +4,10 @@ import android.app.Application
 import android.content.Context
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Router
+import ru.geekbrain.android.mymvpapplication.domain.entities.room.DataBase
 import ru.geekbrain.android.mymvpapplication.model.repo.UsersRepo
-import ru.geekbrain.android.mymvpapplication.model.repo.retrofit.RetrofitGitHubUserRepoImpl
+import ru.geekbrain.android.mymvpapplication.model.repo.combine.CombineGitHubUserRepoImpl
+import ru.geekbrain.android.mymvpapplication.ui.network.AndroidNetworkStatus
 
 class App: Application() {
 
@@ -13,7 +15,13 @@ class App: Application() {
         lateinit var  instance: App
     }
 
-    val gitHubUsersRepo: UsersRepo = RetrofitGitHubUserRepoImpl(ApiHolder.api)
+    val gitHubUsersRepo: UsersRepo by lazy {
+        CombineGitHubUserRepoImpl(
+            ApiHolder.api,
+            AndroidNetworkStatus(instance),
+            DataBase.getInstance()
+        )
+    }
 
     private val cicerone: Cicerone<Router> by lazy {
         Cicerone.create()
@@ -24,6 +32,8 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+        DataBase.create(this)
     }
 
 
