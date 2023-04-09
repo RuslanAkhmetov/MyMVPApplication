@@ -57,6 +57,7 @@ class UserRepositoriesListPresenter(
             },
                 {
                     viewState.showMessage("Error: ${it.message}")
+                    it.printStackTrace()
                 })
     }
 

@@ -21,17 +21,28 @@ class CombineGitHubUserRepoImpl(
         .flatMap<List<GithubUser>?> { isOnline ->
             if (isOnline) {
                 api.getUsers().flatMap { usersList ->
-                    RoomGitHubUserCacheImpl(db).setToCache(usersList)
-                    Single.fromCallable {usersList }
+                    RoomGitHubUserCacheImpl(db).setUsersToCache(usersList)
+                    Single.fromCallable { usersList }
                 }
 
             } else {
-                RoomGitHubUserCacheImpl(db).getFromCache()
+                RoomGitHubUserCacheImpl(db).getUsersProviderFromCache()
             }
         }.subscribeOn(Schedulers.io())
 
 
-    override fun getUserRepoProvider(urlLogin: String): Single<List<GitHubRepository>> {
-        TODO("Not yet implemented")
-    }
+    override fun getUserRepoProvider(
+        urlLogin: String
+    ): Single<List<GitHubRepository>> =
+        networkStatus.isOnlineSingle().flatMap { isOnline ->
+            if (isOnline) {
+                api.getRepositoriesList(urlLogin).flatMap { userReposList ->
+                    RoomGitHubUserCacheImpl(db).setUserReposToCache(urlLogin, userReposList)
+                    Single.fromCallable {userReposList}
+                }
+            } else {
+                RoomGitHubUserCacheImpl(db).getUserReposProviderFromCache(urlLogin)
+            }
+        }.subscribeOn(Schedulers.io())
+
 }

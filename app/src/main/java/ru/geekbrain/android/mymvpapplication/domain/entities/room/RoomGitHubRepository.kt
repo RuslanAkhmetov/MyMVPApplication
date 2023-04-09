@@ -17,5 +17,5 @@ data class RoomGitHubRepository(
     val name: String,
     val forksCount: Int? = null,
     val description: String,
-    val userId: String
+    val userId: Long
 )

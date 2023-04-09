@@ -30,5 +30,7 @@ interface RepositoryDao {
     fun getAll(): List<RoomGitHubRepository>
 
     @Query("SELECT * FROM RoomGitHubRepository WHERE userId = :userId")
-    fun findById(userId: String): RoomGitHubRepository
+    fun findById(userId: Long): List<RoomGitHubRepository>
+
+
 }
