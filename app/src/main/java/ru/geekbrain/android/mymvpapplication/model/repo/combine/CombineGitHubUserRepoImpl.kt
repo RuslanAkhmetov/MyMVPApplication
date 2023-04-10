@@ -4,16 +4,15 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.geekbrain.android.mymvpapplication.domain.entities.GitHubRepository
 import ru.geekbrain.android.mymvpapplication.domain.entities.GithubUser
-import ru.geekbrain.android.mymvpapplication.domain.entities.room.DataBase
 import ru.geekbrain.android.mymvpapplication.model.api.IDataSource
-import ru.geekbrain.android.mymvpapplication.model.cache.room.RoomGitHubUserCacheImpl
+import ru.geekbrain.android.mymvpapplication.model.cache.IGitHubUsersCache
 import ru.geekbrain.android.mymvpapplication.model.network.INetworkStatus
 import ru.geekbrain.android.mymvpapplication.model.repo.UsersRepo
 
 class CombineGitHubUserRepoImpl(
     private val api: IDataSource,
     private val networkStatus: INetworkStatus,
-    private val db: DataBase,
+    private val cache: IGitHubUsersCache,
 ) : UsersRepo {
 
     override fun getUsersProvider(): Single<List<GithubUser>> = networkStatus
@@ -21,12 +20,12 @@ class CombineGitHubUserRepoImpl(
         .flatMap<List<GithubUser>?> { isOnline ->
             if (isOnline) {
                 api.getUsers().flatMap { usersList ->
-                    RoomGitHubUserCacheImpl(db).setUsersToCache(usersList)
+                    cache.setUsersToCache(usersList)
                     Single.fromCallable { usersList }
                 }
 
             } else {
-                RoomGitHubUserCacheImpl(db).getUsersProviderFromCache()
+                cache.getUsersProviderFromCache()
             }
         }.subscribeOn(Schedulers.io())
 
@@ -37,11 +36,11 @@ class CombineGitHubUserRepoImpl(
         networkStatus.isOnlineSingle().flatMap { isOnline ->
             if (isOnline) {
                 api.getRepositoriesList(urlLogin).flatMap { userReposList ->
-                    RoomGitHubUserCacheImpl(db).setUserReposToCache(urlLogin, userReposList)
+                    cache.setUserReposToCache(urlLogin, userReposList)
                     Single.fromCallable {userReposList}
                 }
             } else {
-                RoomGitHubUserCacheImpl(db).getUserReposProviderFromCache(urlLogin)
+                cache.getUserReposProviderFromCache(urlLogin)
             }
         }.subscribeOn(Schedulers.io())
 

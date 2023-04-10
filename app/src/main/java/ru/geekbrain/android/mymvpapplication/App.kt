@@ -5,6 +5,7 @@ import android.content.Context
 import com.github.terrakok.cicerone.Cicerone
 import com.github.terrakok.cicerone.Router
 import ru.geekbrain.android.mymvpapplication.domain.entities.room.DataBase
+import ru.geekbrain.android.mymvpapplication.model.cache.room.RoomGitHubUserCacheImpl
 import ru.geekbrain.android.mymvpapplication.model.repo.UsersRepo
 import ru.geekbrain.android.mymvpapplication.model.repo.combine.CombineGitHubUserRepoImpl
 import ru.geekbrain.android.mymvpapplication.ui.network.AndroidNetworkStatus
@@ -19,7 +20,7 @@ class App: Application() {
         CombineGitHubUserRepoImpl(
             ApiHolder.api,
             AndroidNetworkStatus(instance),
-            DataBase.getInstance()
+            RoomGitHubUserCacheImpl(DataBase.getInstance())
         )
     }
 
