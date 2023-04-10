@@ -8,14 +8,15 @@ import ru.geekbrain.android.mymvpapplication.domain.entities.room.dao.UserDao
 
 @androidx.room.Database(
     entities = [RoomGitHubUser::class, RoomGitHubRepository::class],
-    version = 1
+    version = 1,
+    exportSchema= false
 )
 abstract class DataBase : RoomDatabase() {
     abstract val userDao: UserDao
     abstract val repositoryDao: RepositoryDao
 
     companion object {
-        private const val DB_NAME = "database.db"
+        const val DB_NAME = "database.db"
         private var instance: DataBase? = null
 
         fun getInstance() = instance ?: throw RuntimeException("DB was not created!")
