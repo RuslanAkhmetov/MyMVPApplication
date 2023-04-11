@@ -5,18 +5,22 @@ import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import ru.geekbrain.android.mymvpapplication.domain.entities.GitHubRepository
-import ru.geekbrain.android.mymvpapplication.model.repo.UsersRepo
+import ru.geekbrain.android.mymvpapplication.model.repo.UserRepositoryRepo
+import javax.inject.Inject
 
 class UserRepoInfoPresenter(
     private val mainThread: Scheduler,
-    private val router: Router,
-    private val userRepo: UsersRepo,
     private val userLogin: String,
     private val repoIndex: Int
 ): MvpPresenter<UserRepoInfoContact.UserRepoInfoView>(),
         UserRepoInfoContact.UserRepoInfoPresenter{
 
-    private val TAG = "UserRepoInfoPresenter"
+    private val TAG = "userRepoInfoPresenter"
+
+    @Inject
+    lateinit var router: Router
+    @Inject
+    lateinit var userRepositoryRepo: UserRepositoryRepo
 
     private var gitHubUserRepo : GitHubRepository? = null
 
@@ -26,7 +30,7 @@ class UserRepoInfoPresenter(
     }
 
     override fun loadUserRepoData(index: Int) {
-        userRepo.getUserRepoProvider(userLogin)
+        userRepositoryRepo.getUserRepoProvider(userLogin)
             .observeOn(mainThread)
             .subscribe({list ->
                 gitHubUserRepo = list[index]

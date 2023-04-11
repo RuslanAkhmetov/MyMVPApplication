@@ -1,24 +1,30 @@
 package ru.geekbrain.android.mymvpapplication.ui.mainactivity
 
 import android.os.Bundle
+import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 import ru.geekbrain.android.mymvpapplication.App
 import ru.geekbrain.android.mymvpapplication.R
-import ru.geekbrain.android.mymvpapplication.app
 import ru.geekbrain.android.mymvpapplication.databinding.ActivityMainBinding
 import ru.geekbrain.android.mymvpapplication.ui.AndroidScreens
 import ru.geekbrain.android.mymvpapplication.ui.BackButtonListener
+import javax.inject.Inject
 
 
 class MainActivity : MvpAppCompatActivity(), MainActivityContract.MainView {
 
+    @Inject
+    lateinit var navigatorHolder : NavigatorHolder
     val navigator = AppNavigator(this, R.id.container)
 
 
     private val presenter by moxyPresenter {
-        MainPresenter(app.router, AndroidScreens)
+        MainPresenter(AndroidScreens).apply {
+            App.instance.appComponent.inject(this)
+        }
+
     }
 
 
@@ -27,19 +33,19 @@ class MainActivity : MvpAppCompatActivity(), MainActivityContract.MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        App.instance.appComponent.inject(this)
     }
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        App.instance.navigatorHolder.setNavigator(navigator)
+        navigatorHolder.setNavigator(navigator)
     }
 
     override fun onPause() {
         super.onPause()
-        App.instance.navigatorHolder.removeNavigator()
+        navigatorHolder.removeNavigator()
     }
 
     @Deprecated("Deprecated in Java")

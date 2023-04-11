@@ -7,9 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.geekbrain.android.mymvpapplication.databinding.RecyclerviewUserItemBinding
 import ru.geekbrain.android.mymvpapplication.model.image.IImageLoader
 import ru.geekbrain.android.mymvpapplication.ui.IUserListPresenter
+import javax.inject.Inject
 
-class UsersRVAdapter(private val presenter: IUserListPresenter, val imageLoader: IImageLoader<ImageView>) :
+class UsersRVAdapter(private val presenter: IUserListPresenter ) :
     RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
+
+    @Inject
+    lateinit var imageLoader: IImageLoader<ImageView>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -39,6 +43,7 @@ class UsersRVAdapter(private val presenter: IUserListPresenter, val imageLoader:
         override fun loadAvatar(avatarUrl: String) {
             with(vb.root){imageLoader.loadInto(avatarUrl, vb.avatarImageView)}
         }
+
 
     }
 

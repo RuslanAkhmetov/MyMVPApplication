@@ -2,7 +2,6 @@ package ru.geekbrain.android.mymvpapplication.model.repo.combine
 
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
-import ru.geekbrain.android.mymvpapplication.domain.entities.GitHubRepository
 import ru.geekbrain.android.mymvpapplication.domain.entities.GithubUser
 import ru.geekbrain.android.mymvpapplication.model.api.IDataSource
 import ru.geekbrain.android.mymvpapplication.model.cache.IGitHubUsersCache
@@ -30,18 +29,6 @@ class CombineGitHubUserRepoImpl(
         }.subscribeOn(Schedulers.io())
 
 
-    override fun getUserRepoProvider(
-        urlLogin: String
-    ): Single<List<GitHubRepository>> =
-        networkStatus.isOnlineSingle().flatMap { isOnline ->
-            if (isOnline) {
-                api.getRepositoriesList(urlLogin).flatMap { userReposList ->
-                    cache.setUserReposToCache(urlLogin, userReposList)
-                    Single.fromCallable {userReposList}
-                }
-            } else {
-                cache.getUserReposProviderFromCache(urlLogin)
-            }
-        }.subscribeOn(Schedulers.io())
+
 
 }

@@ -10,6 +10,7 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrain.android.mymvpapplication.App
 import ru.geekbrain.android.mymvpapplication.databinding.FragmentUserRepoInfoBinding
+import ru.geekbrain.android.mymvpapplication.di.modules.repository.RepositorySubComponent
 
 const val USER_LOGIN = "userLogin"
 const val INDEX_OF_REPO = "indexOfRepo"
@@ -19,28 +20,31 @@ class UserRepoInfoFragment: MvpAppCompatFragment(), UserRepoInfoContact.UserRepo
     var userLogin: String = ""
     var indexOfRepo: Int = -1
 
+    var repositorySubComponent: RepositorySubComponent? = null
+
     val userRepoInfoPresenter : UserRepoInfoPresenter by moxyPresenter {
+        repositorySubComponent = App.instance.initRepositorySubComponent()
+
         UserRepoInfoPresenter(
             AndroidSchedulers.mainThread(),
-            App.instance.router,
-            App.instance.gitHubUsersRepo,
             userLogin,
             indexOfRepo
-        )
+        ).apply {
+            repositorySubComponent?.inject(this)
+        }
     }
 
     lateinit var binding: FragmentUserRepoInfoBinding
 
     companion object{
-        fun newInstance(login: String, indexRepo: Int): UserRepoInfoFragment{
-            val args = Bundle()
-            args.putString(USER_LOGIN, login)
-            args.putInt(INDEX_OF_REPO, indexRepo)
-            val fragment = UserRepoInfoFragment()
-            fragment.arguments = args
-            fragment.userLogin = login
-            fragment.indexOfRepo = indexRepo
-            return fragment
+        fun newInstance(login: String, indexRepo: Int)= UserRepoInfoFragment().apply{
+            arguments = Bundle().apply {
+                putString(USER_LOGIN, login)
+                putInt(INDEX_OF_REPO, indexRepo)
+            }
+
+            userLogin = login
+            indexOfRepo = indexRepo
         }
     }
 

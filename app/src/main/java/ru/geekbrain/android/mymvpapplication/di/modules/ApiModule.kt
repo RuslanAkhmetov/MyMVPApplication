@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.geekbrain.android.mymvpapplication.App
 import ru.geekbrain.android.mymvpapplication.model.api.IDataSource
 import ru.geekbrain.android.mymvpapplication.model.network.INetworkStatus
-import ru.geekbrain.android.mymvpapplication.ui.network.AndroidNetworkStatus
+import ru.geekbrain.android.mymvpapplication.model.repo.network.AndroidNetworkStatus
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -20,7 +20,7 @@ class ApiModule {
 
     @Named("baseUrl")
     @Provides
-    fun baseUrl(): String = "https://api.github.con/"
+    fun baseUrl(): String = "https://api.github.com"
 
     @Singleton
     @Provides

@@ -4,17 +4,22 @@ import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import ru.geekbrain.android.mymvpapplication.domain.entities.GitHubRepository
-import ru.geekbrain.android.mymvpapplication.model.repo.UsersRepo
+import ru.geekbrain.android.mymvpapplication.model.repo.UserRepositoryRepo
 import ru.geekbrain.android.mymvpapplication.ui.IScreens
+import javax.inject.Inject
 
 class UserRepositoriesListPresenter(
     private val mainThread: Scheduler,
-    private val userRepo: UsersRepo,
-    private val router: Router,
+
     val login: String,
     private val screens: IScreens
 ): MvpPresenter<UserRepositoriesContract.UserRepositoriesView>(),
     UserRepositoriesContract.UserRepositoriesPresenter {
+
+    @Inject
+    lateinit var userRepositoryRepo: UserRepositoryRepo
+    @Inject
+    lateinit var router: Router
 
     class  UserRepositoriesListPresenter:
     UserRepositoriesContract.IRepositoriesListPresenter{
@@ -48,7 +53,7 @@ class UserRepositoriesListPresenter(
     }
 
     override fun loadData() {
-        userRepo.getUserRepoProvider(login)
+        userRepositoryRepo.getUserRepoProvider(login)
             .observeOn(mainThread)
             .subscribe({list->
                 userRepositoriesListPresenter.userRepositoriesList.clear()
@@ -64,5 +69,10 @@ class UserRepositoriesListPresenter(
     override fun backPressed(): Boolean {
         router.exit()
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewState.release()
     }
 }

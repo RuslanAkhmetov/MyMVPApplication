@@ -2,11 +2,10 @@ package ru.geekbrain.android.mymvpapplication.di
 
 import dagger.Component
 import ru.geekbrain.android.mymvpapplication.di.modules.*
+import ru.geekbrain.android.mymvpapplication.di.modules.user.UserSubComponent
 import ru.geekbrain.android.mymvpapplication.ui.mainactivity.MainActivity
 import ru.geekbrain.android.mymvpapplication.ui.mainactivity.MainPresenter
-import ru.geekbrain.android.mymvpapplication.ui.userslist.UsersListPresenter
-import ru.geekbrain.android.mymvpapplication.ui.usersrepoinfo.UserRepoInfoPresenter
-import ru.geekbrain.android.mymvpapplication.ui.usersrepos.UserRepositoriesListPresenter
+import ru.geekbrain.android.mymvpapplication.ui.userslist.UsersRVAdapter
 import javax.inject.Singleton
 
 @Singleton
@@ -15,14 +14,15 @@ import javax.inject.Singleton
         AppModule::class,
         CicerroneModule::class,
         DateBaseModule::class,
-        RepoModule::class]
+        ImageModule::class]
 )
 interface AppComponent {
 
+    fun userSubComponent(): UserSubComponent
+
     fun inject(mainActivity: MainActivity)
     fun inject(mainPresenter: MainPresenter)
-    fun inject(usersListPresenter: UsersListPresenter)
-    fun inject(usersRepositoriesListPresenter: UserRepositoriesListPresenter)
-    fun inject(usersRepoInfoPresenter: UserRepoInfoPresenter)
+    fun inject(usersRVAdapter: UsersRVAdapter)
+
 
 }

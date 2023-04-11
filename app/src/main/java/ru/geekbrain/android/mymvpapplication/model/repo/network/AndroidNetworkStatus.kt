@@ -1,4 +1,4 @@
-package ru.geekbrain.android.mymvpapplication.ui.network
+package ru.geekbrain.android.mymvpapplication.model.repo.network
 
 import android.content.Context
 import android.database.Observable

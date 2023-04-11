@@ -10,6 +10,7 @@ interface UserRepositoriesContract {
     interface UserRepositoriesView: MvpView {
         fun init()
         fun updateList()
+        fun release()
         fun showMessage(textMessage: String)
     }
 

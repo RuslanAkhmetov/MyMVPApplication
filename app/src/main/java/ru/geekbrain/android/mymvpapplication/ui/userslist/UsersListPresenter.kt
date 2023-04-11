@@ -1,5 +1,6 @@
 package ru.geekbrain.android.mymvpapplication.ui.userslist
 
+import android.util.Log
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
@@ -8,15 +9,19 @@ import ru.geekbrain.android.mymvpapplication.model.repo.UsersRepo
 import ru.geekbrain.android.mymvpapplication.ui.IScreens
 import ru.geekbrain.android.mymvpapplication.ui.IUserListPresenter
 import ru.geekbrain.android.mymvpapplication.ui.userslist.GithubUsersContract.UserItemView
+import javax.inject.Inject
 
 
-class UsersListPresenter(
-    private val mainThreadScheduler: Scheduler,
-    private val usersRepo: UsersRepo,
-    private val router: Router,
+class UsersListPresenter(private var mainThreadScheduler: Scheduler,
     private val screens: IScreens
 ) : MvpPresenter<GithubUsersContract.UserView>(),
     GithubUsersContract.Presenter  {
+
+
+    @Inject
+    lateinit var usersRepo: UsersRepo
+    @Inject
+    lateinit var router: Router
 
     private val TAG = "UsersListPresenter"
 
@@ -65,6 +70,9 @@ class UsersListPresenter(
                 viewState.updateList()
             },
                 {
+                    Log.i(TAG, "loadData: ")
+                    it.printStackTrace()
+
                     println("Error ${it.message}")
                 })
 
@@ -76,5 +84,9 @@ class UsersListPresenter(
         return true
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewState.release()
+    }
 
 }

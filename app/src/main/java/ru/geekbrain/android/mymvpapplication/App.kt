@@ -2,38 +2,26 @@ package ru.geekbrain.android.mymvpapplication
 
 import android.app.Application
 import android.content.Context
-import com.github.terrakok.cicerone.Cicerone
-import com.github.terrakok.cicerone.Router
 import ru.geekbrain.android.mymvpapplication.di.AppComponent
 import ru.geekbrain.android.mymvpapplication.di.DaggerAppComponent
 import ru.geekbrain.android.mymvpapplication.di.modules.AppModule
-import ru.geekbrain.android.mymvpapplication.domain.entities.room.DataBase
-import ru.geekbrain.android.mymvpapplication.model.cache.room.RoomGitHubUserCacheImpl
-import ru.geekbrain.android.mymvpapplication.model.repo.UsersRepo
-import ru.geekbrain.android.mymvpapplication.model.repo.combine.CombineGitHubUserRepoImpl
-import ru.geekbrain.android.mymvpapplication.ui.network.AndroidNetworkStatus
+import ru.geekbrain.android.mymvpapplication.di.modules.repository.RepositorySubComponent
+import ru.geekbrain.android.mymvpapplication.di.modules.user.UserSubComponent
 
-class App: Application() {
+class App : Application() {
 
     lateinit var appComponent: AppComponent
+        private set
 
-    companion object{
-        lateinit var  instance: App
+    var userSubComponent: UserSubComponent? = null
+
+    var repositorySubComponent: RepositorySubComponent? = null
+
+
+    companion object {
+        lateinit var instance: App
     }
 
-    val gitHubUsersRepo: UsersRepo by lazy {
-        CombineGitHubUserRepoImpl(
-            ApiHolder.api,
-            AndroidNetworkStatus(instance),
-            RoomGitHubUserCacheImpl(DataBase.getInstance())
-        )
-    }
-
-    private val cicerone: Cicerone<Router> by lazy {
-        Cicerone.create()
-    }
-    val navigatorHolder get() = cicerone.getNavigatorHolder()
-    val router get() = cicerone.router
 
     override fun onCreate() {
         super.onCreate()
@@ -43,7 +31,22 @@ class App: Application() {
             .appModule(AppModule(this))
             .build()
 
+    }
 
+    fun initUserSubComponent() = appComponent.userSubComponent().also {
+        userSubComponent = it
+    }
+
+    fun releaseUserSubComponent() {
+        userSubComponent = null
+    }
+
+    fun initRepositorySubComponent() = userSubComponent?.repositorySubComponent().also {
+        repositorySubComponent = it
+    }
+
+    fun releaseRepositorySubComponent() {
+        repositorySubComponent = null
     }
 
 
@@ -51,5 +54,5 @@ class App: Application() {
 
 val Context.app: App
     get() {
-       return applicationContext as App
+        return applicationContext as App
     }

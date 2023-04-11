@@ -10,21 +10,26 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrain.android.mymvpapplication.App
 import ru.geekbrain.android.mymvpapplication.databinding.FragmentUsersBinding
+import ru.geekbrain.android.mymvpapplication.di.modules.user.UserSubComponent
 import ru.geekbrain.android.mymvpapplication.ui.AndroidScreens
 import ru.geekbrain.android.mymvpapplication.ui.BackButtonListener
-import ru.geekbrain.android.mymvpapplication.ui.image.GlideImageLoader
 
 class UsersListFragment: MvpAppCompatFragment(), GithubUsersContract.UserView, BackButtonListener {
+
 
     companion object{
         fun newInstance() = UsersListFragment()
     }
 
+    private var userSubComponent: UserSubComponent? = null
+
     private val presenter: UsersListPresenter by moxyPresenter {
+        userSubComponent = App.instance.initUserSubComponent()
+
         UsersListPresenter( AndroidSchedulers.mainThread(),
-            App.instance.gitHubUsersRepo,
-            App.instance.router,
-            AndroidScreens)
+            AndroidScreens).apply {
+                userSubComponent?.inject(this)
+        }
     }
 
     private var adapter: UsersRVAdapter?= null
@@ -47,13 +52,20 @@ class UsersListFragment: MvpAppCompatFragment(), GithubUsersContract.UserView, B
 
     override fun init() {
         binding?.rvUsers?.layoutManager = LinearLayoutManager(context)
-        adapter = UsersRVAdapter(presenter = presenter.userListPresenter, GlideImageLoader())
+        adapter = UsersRVAdapter(presenter = presenter.userListPresenter).apply {
+            App.instance.appComponent.inject(this)
+        }
         binding?.rvUsers?.adapter = adapter
     }
 
     override fun updateList() {
 
         adapter?.notifyDataSetChanged()
+    }
+
+    override fun release() {
+        userSubComponent = null
+        App.instance.releaseUserSubComponent()
     }
 
     override fun backPressed(): Boolean =

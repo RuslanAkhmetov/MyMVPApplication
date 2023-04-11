@@ -11,6 +11,7 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrain.android.mymvpapplication.App
 import ru.geekbrain.android.mymvpapplication.databinding.FragmentUserRepositoriesBinding
+import ru.geekbrain.android.mymvpapplication.di.modules.repository.RepositorySubComponent
 import ru.geekbrain.android.mymvpapplication.ui.AndroidScreens
 import ru.geekbrain.android.mymvpapplication.ui.BackButtonListener
 
@@ -19,27 +20,32 @@ const val USER_LOGIN = "userLogin"
 class UserRepositoriesFragment : MvpAppCompatFragment(),
     UserRepositoriesContract.UserRepositoriesView, BackButtonListener {
 
+
     var userLogin: String = ""
 
+
+    var repositorySubComponent: RepositorySubComponent? = null
+
     companion object {
-        fun newInstance(userLogin: String): UserRepositoriesFragment {
-            val args = Bundle()
-            args.putString(USER_LOGIN, userLogin)
-            val userRepoFragment = UserRepositoriesFragment()
-            userRepoFragment.arguments = args
-            userRepoFragment.userLogin = userLogin
-            return userRepoFragment
+        fun newInstance(userLogin: String)= UserRepositoriesFragment().apply {
+            arguments = Bundle().apply {
+                putString(USER_LOGIN, userLogin)
+            }
+            this.userLogin = userLogin
+            repositorySubComponent = App.instance.initRepositorySubComponent()
+            /*App.instance.appComponent.inject(this)*/
         }
     }
 
     private val userRepositoriesPresenter: UserRepositoriesListPresenter by moxyPresenter {
         UserRepositoriesListPresenter(
             AndroidSchedulers.mainThread(),
-            App.instance.gitHubUsersRepo,
-            App.instance.router,
+
             userLogin,
             AndroidScreens
-        )
+        ).apply {
+            repositorySubComponent?.inject(this)
+        }
     }
 
     private var binding: FragmentUserRepositoriesBinding? = null
@@ -77,6 +83,11 @@ class UserRepositoriesFragment : MvpAppCompatFragment(),
 
     override fun updateList() {
         userRepositoriesAdapter?.notifyDataSetChanged()
+    }
+
+    override fun release() {
+        repositorySubComponent =null
+        App.instance.releaseRepositorySubComponent()
     }
 
     override fun showMessage(textMessage: String) {

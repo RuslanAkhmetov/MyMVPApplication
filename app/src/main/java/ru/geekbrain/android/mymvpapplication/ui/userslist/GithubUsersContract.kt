@@ -10,6 +10,7 @@ class GithubUsersContract {
     interface UserView: MvpView {
         fun init()
         fun updateList()
+        fun release()
     }
 
     interface Presenter{
