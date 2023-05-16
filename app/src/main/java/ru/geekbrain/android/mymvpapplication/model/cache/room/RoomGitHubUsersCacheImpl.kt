@@ -14,7 +14,9 @@ class RoomGitHubUsersCacheImpl(private val db: DataBase) : IGitHubUsersCache {
                     roomGitHubUser.login ?: "",
                     roomGitHubUser.id ?: 0,
                     roomGitHubUser.avatarUrl ?: "",
+                    roomGitHubUser.url?:"",
                     roomGitHubUser.reposUrl ?: ""
+
                 )
             }
         }
@@ -26,6 +28,7 @@ class RoomGitHubUsersCacheImpl(private val db: DataBase) : IGitHubUsersCache {
                 githubUser.id,
                 githubUser.login,
                 githubUser.avatarUrl,
+                githubUser.url,
                 githubUser.reposUrl
             )
         }

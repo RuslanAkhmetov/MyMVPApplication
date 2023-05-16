@@ -20,6 +20,7 @@ class GithubUsersContract {
 
     interface UserItemView: IItemView {
         fun setLogin(text: String)
+        fun setUrl(text:String)
         fun loadAvatar(avatarUrl: String)
     }
 

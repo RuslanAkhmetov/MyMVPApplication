@@ -6,9 +6,9 @@ import ru.geekbrain.android.mymvpapplication.domain.entities.room.dao.UserDao
 
 @androidx.room.Database(
     entities = [RoomGitHubUser::class, RoomGitHubRepository::class],
-    version = 1
+    version = 2,
 
-)
+    )
 abstract class DataBase : RoomDatabase() {
     abstract val userDao: UserDao
     abstract val repositoryDao: RepositoryDao

@@ -3,6 +3,7 @@ package ru.geekbrain.android.mymvpapplication.di
 import dagger.Component
 import ru.geekbrain.android.mymvpapplication.di.modules.*
 import ru.geekbrain.android.mymvpapplication.di.modules.user.UserSubComponent
+import ru.geekbrain.android.mymvpapplication.model.cache.disc.SaveFileOnDiskImpl
 import ru.geekbrain.android.mymvpapplication.ui.mainactivity.MainActivity
 import ru.geekbrain.android.mymvpapplication.ui.mainactivity.MainPresenter
 import ru.geekbrain.android.mymvpapplication.ui.userslist.UsersRVAdapter
@@ -23,6 +24,7 @@ interface AppComponent {
     fun inject(mainActivity: MainActivity)
     fun inject(mainPresenter: MainPresenter)
     fun inject(usersRVAdapter: UsersRVAdapter)
+    fun inject(saveFileOnDiskImpl: SaveFileOnDiskImpl)
 
 
 }

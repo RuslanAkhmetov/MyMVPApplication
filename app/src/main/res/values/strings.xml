@@ -5,4 +5,8 @@
     <string name="id">Id</string>
     <string name="forks_count">Forks count</string>
     <string name="description">Description</string>
+    <string name="name">Name</string>
+    <string name="id_num">ID Num</string>
+    <string name="description_deposit">Description</string>
+    <string name="forks_count_depo">Forks count</string>
 </resources>

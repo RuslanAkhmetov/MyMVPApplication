@@ -5,8 +5,11 @@ import moxy.MvpPresenter
 import ru.geekbrain.android.mymvpapplication.ui.IScreens
 import javax.inject.Inject
 
-class MainPresenter(  private val screens: IScreens) :
+class MainPresenter() :
     MvpPresenter<MainActivityContract.MainView>() {
+
+    @Inject
+    lateinit var screens: IScreens
 
     @Inject
     lateinit var router:Router

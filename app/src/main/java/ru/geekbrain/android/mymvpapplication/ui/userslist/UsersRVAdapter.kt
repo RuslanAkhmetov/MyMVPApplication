@@ -15,6 +15,8 @@ class UsersRVAdapter(private val presenter: IUserListPresenter ) :
     @Inject
     lateinit var imageLoader: IImageLoader<ImageView>
 
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
             RecyclerviewUserItemBinding.inflate(
@@ -38,7 +40,13 @@ class UsersRVAdapter(private val presenter: IUserListPresenter ) :
 
         override fun setLogin(text: String) {
             vb.tvLogin.text = text
+
         }
+
+        override fun setUrl(text: String) {
+            vb.urlLogin.text = text
+        }
+
 
         override fun loadAvatar(avatarUrl: String) {
             with(vb.root){imageLoader.loadInto(avatarUrl, vb.avatarImageView)}

@@ -9,8 +9,6 @@ import ru.geekbrain.android.mymvpapplication.ui.IScreens
 import javax.inject.Inject
 
 class UserRepositoriesListPresenter(
-    private val mainThread: Scheduler,
-
     val login: String,
     private val screens: IScreens
 ): MvpPresenter<UserRepositoriesContract.UserRepositoriesView>(),
@@ -18,6 +16,8 @@ class UserRepositoriesListPresenter(
 
     @Inject
     lateinit var userRepositoryRepo: UserRepositoryRepo
+    @Inject
+    lateinit var mainThread: Scheduler
     @Inject
     lateinit var router: Router
 

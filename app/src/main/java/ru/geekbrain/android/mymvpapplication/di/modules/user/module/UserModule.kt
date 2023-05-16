@@ -22,6 +22,8 @@ class UserModule {
     ): UsersRepo =
         CombineGitHubUserRepoImpl(api, networkStatus, cache)
 
+
+
     @Provides
     fun usersCache(dataBase: DataBase): IGitHubUsersCache{
         return RoomGitHubUsersCacheImpl(dataBase)

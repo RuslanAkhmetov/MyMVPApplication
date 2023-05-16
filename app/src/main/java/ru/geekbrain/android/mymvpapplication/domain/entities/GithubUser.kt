@@ -11,9 +11,10 @@ data class GithubUser(
     //val node_id : String,
     @Expose
     val avatarUrl : String,
-    /*val gravatar_id : String,
+    /*val gravatar_id : String,*/
+    @Expose
     val url : String,
-    val html_url : String,
+    /* val html_url : String,
     val followers_url : String,
     val following_url : String,
     val gists_url : String,

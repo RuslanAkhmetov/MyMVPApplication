@@ -9,7 +9,6 @@ import ru.geekbrain.android.mymvpapplication.model.repo.UserRepositoryRepo
 import javax.inject.Inject
 
 class UserRepoInfoPresenter(
-    private val mainThread: Scheduler,
     private val userLogin: String,
     private val repoIndex: Int
 ): MvpPresenter<UserRepoInfoContact.UserRepoInfoView>(),
@@ -19,6 +18,8 @@ class UserRepoInfoPresenter(
 
     @Inject
     lateinit var router: Router
+    @Inject
+    lateinit var mainThread: Scheduler
     @Inject
     lateinit var userRepositoryRepo: UserRepositoryRepo
 

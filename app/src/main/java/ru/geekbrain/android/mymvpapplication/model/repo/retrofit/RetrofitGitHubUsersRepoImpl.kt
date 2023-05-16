@@ -6,7 +6,6 @@ import ru.geekbrain.android.mymvpapplication.model.repo.UsersRepo
 
 class RetrofitGitHubUsersRepoImpl(
     private val api: IDataSource
-
 ) : UsersRepo {
 
      override fun getUsersProvider() =

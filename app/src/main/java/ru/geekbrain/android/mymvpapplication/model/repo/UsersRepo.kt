@@ -5,22 +5,7 @@ import ru.geekbrain.android.mymvpapplication.domain.entities.GithubUser
 
 
 interface UsersRepo {
-    //CRUD
-    //Create(-)
-    //Read
-
-    //fun getUsers(): List<GithubUser>
 
     fun getUsersProvider(): Single<List<GithubUser>>
-
-    //fun getUser(index: Int): GithubUser
-
-
-
-
-    //Update(-)
-    //Delete(-)
-
-
 
 }

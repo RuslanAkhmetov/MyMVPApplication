@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrain.android.mymvpapplication.App
@@ -39,8 +38,6 @@ class UserRepositoriesFragment : MvpAppCompatFragment(),
 
     private val userRepositoriesPresenter: UserRepositoriesListPresenter by moxyPresenter {
         UserRepositoriesListPresenter(
-            AndroidSchedulers.mainThread(),
-
             userLogin,
             AndroidScreens
         ).apply {

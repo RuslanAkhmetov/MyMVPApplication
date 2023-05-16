@@ -1,8 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/name_label_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:textSize="@dimen/label_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/id_label_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/id_num"
+        android:textSize="@dimen/label_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_text_view"/>
+
+    <TextView
+        android:id="@+id/forks_label_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forks_count"
+        android:textSize="@dimen/label_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/id_text_view"/>
+
+    <TextView
+        android:id="@+id/description_label_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/description"
+        android:textSize="@dimen/label_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/forks_count_text_view"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids=" name_text_view,forks_count_text_view,description_text_view"
+        tools:layout_editor_absoluteX="352dp" />
+
 
     <TextView
         android:id="@+id/name_text_view"
@@ -10,9 +57,9 @@
         android:layout_height="wrap_content"
         android:text="@string/login"
         android:textSize="@dimen/list_text_size"
+        android:textColor="@color/design_default_color_on_secondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -21,10 +68,10 @@
         android:layout_height="wrap_content"
         android:text="@string/id"
         android:textSize="@dimen/list_text_size"
+        android:textColor="@color/design_default_color_on_secondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name_text_view"
-         />
+        app:layout_constraintTop_toBottomOf="@id/name_text_view"/>
 
     <TextView
         android:id="@+id/forks_count_text_view"
@@ -32,10 +79,10 @@
         android:layout_height="wrap_content"
         android:text="@string/forks_count"
         android:textSize="@dimen/list_text_size"
+        android:textColor="@color/design_default_color_on_secondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/id_text_view"
-          />
+        app:layout_constraintTop_toBottomOf="@id/id_text_view"/>
 
     <TextView
         android:id="@+id/description_text_view"
@@ -43,10 +90,10 @@
         android:layout_height="wrap_content"
         android:text="@string/description"
         android:textSize="@dimen/list_text_size"
+        android:textColor="@color/design_default_color_on_secondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/forks_count_text_view"
-          />
+        app:layout_constraintTop_toBottomOf="@id/description_label_view"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,6 @@ import moxy.ktx.moxyPresenter
 import ru.geekbrain.android.mymvpapplication.App
 import ru.geekbrain.android.mymvpapplication.R
 import ru.geekbrain.android.mymvpapplication.databinding.ActivityMainBinding
-import ru.geekbrain.android.mymvpapplication.ui.AndroidScreens
 import ru.geekbrain.android.mymvpapplication.ui.BackButtonListener
 import javax.inject.Inject
 
@@ -17,11 +16,11 @@ class MainActivity : MvpAppCompatActivity(), MainActivityContract.MainView {
 
     @Inject
     lateinit var navigatorHolder : NavigatorHolder
-    val navigator = AppNavigator(this, R.id.container)
 
+    private val navigator = AppNavigator(this, R.id.container)
 
     private val presenter by moxyPresenter {
-        MainPresenter(AndroidScreens).apply {
+        MainPresenter().apply {
             App.instance.appComponent.inject(this)
         }
 

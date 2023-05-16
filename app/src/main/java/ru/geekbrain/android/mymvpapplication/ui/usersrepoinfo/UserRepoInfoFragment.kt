@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrain.android.mymvpapplication.App
@@ -26,7 +25,6 @@ class UserRepoInfoFragment: MvpAppCompatFragment(), UserRepoInfoContact.UserRepo
         repositorySubComponent = App.instance.initRepositorySubComponent()
 
         UserRepoInfoPresenter(
-            AndroidSchedulers.mainThread(),
             userLogin,
             indexOfRepo
         ).apply {

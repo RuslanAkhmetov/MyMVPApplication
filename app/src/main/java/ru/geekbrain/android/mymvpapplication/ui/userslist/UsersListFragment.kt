@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import androidx.recyclerview.widget.RecyclerView
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.geekbrain.android.mymvpapplication.App
+import ru.geekbrain.android.mymvpapplication.R
 import ru.geekbrain.android.mymvpapplication.databinding.FragmentUsersBinding
 import ru.geekbrain.android.mymvpapplication.di.modules.user.UserSubComponent
-import ru.geekbrain.android.mymvpapplication.ui.AndroidScreens
 import ru.geekbrain.android.mymvpapplication.ui.BackButtonListener
 
 class UsersListFragment: MvpAppCompatFragment(), GithubUsersContract.UserView, BackButtonListener {
@@ -26,8 +27,7 @@ class UsersListFragment: MvpAppCompatFragment(), GithubUsersContract.UserView, B
     private val presenter: UsersListPresenter by moxyPresenter {
         userSubComponent = App.instance.initUserSubComponent()
 
-        UsersListPresenter( AndroidSchedulers.mainThread(),
-            AndroidScreens).apply {
+        UsersListPresenter().apply {
                 userSubComponent?.inject(this)
         }
     }
@@ -52,6 +52,9 @@ class UsersListFragment: MvpAppCompatFragment(), GithubUsersContract.UserView, B
 
     override fun init() {
         binding?.rvUsers?.layoutManager = LinearLayoutManager(context)
+        val dividerItemDecoration = DividerItemDecoration(context, RecyclerView.VERTICAL)
+        dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.divider_drawable))
+        binding?.rvUsers?.addItemDecoration(dividerItemDecoration)
         adapter = UsersRVAdapter(presenter = presenter.userListPresenter).apply {
             App.instance.appComponent.inject(this)
         }

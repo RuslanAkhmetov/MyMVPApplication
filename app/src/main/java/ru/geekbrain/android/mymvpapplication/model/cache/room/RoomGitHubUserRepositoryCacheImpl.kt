@@ -10,6 +10,7 @@ class RoomGitHubUserRepositoryCacheImpl(private val db: DataBase) : IGitHubUserR
 
     override fun getUserReposProviderFromCache(login: String): Single<List<GitHubRepository>> {
         val userId = db.userDao.findByLogin(login).id
+
         return Single.fromCallable {
             db.repositoryDao.findById(userId).map { roomGitHubRepository ->
                 GitHubRepository(
